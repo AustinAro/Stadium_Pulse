@@ -2,6 +2,8 @@
 
 StadiumPulse is an advanced, real-time stadium operations, crowd flow intelligence, and automated dispatch control center. Designed specifically to address the high-occupancy operational challenges of **FIFA World Cup 2026** venues, it translates raw telemetry metrics into actionable predictive insights to pre-emptively manage surges, dispatch personnel, and ensure visitor safety.
 
+🔗 **[Watch the LinkedIn Project Walkthrough & Pitch Video](https://www.linkedin.com/)**
+
 ---
 
 ## 🎯 Problem Statement Alignment (FIFA World Cup 2026)
