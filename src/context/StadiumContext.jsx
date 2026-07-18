@@ -52,25 +52,29 @@ export const StadiumProvider = ({ children }) => {
     };
 
     try {
-      ws = new WebSocket('wss://api.stadiumpulse.live/feed');
-      ws.onmessage = (e) => {
-        try {
-          const data = JSON.parse(e.data);
-          if (data && Array.isArray(data)) {
-            setZones(data);
+      if (typeof WebSocket !== 'undefined') {
+        ws = new WebSocket('wss://api.stadiumpulse.live/feed');
+        ws.onmessage = (e) => {
+          try {
+            const data = JSON.parse(e.data);
+            if (data && Array.isArray(data)) {
+              setZones(data);
+            }
+          } catch (err) {
+            startFallback();
           }
-        } catch (err) {
+        };
+        
+        ws.onerror = () => {
           startFallback();
-        }
-      };
-      
-      ws.onerror = () => {
-        startFallback();
-      };
+        };
 
-      ws.onclose = () => {
+        ws.onclose = () => {
+          startFallback();
+        };
+      } else {
         startFallback();
-      };
+      }
     } catch (e) {
       startFallback();
     }
