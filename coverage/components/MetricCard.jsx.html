@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.96% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>32/33</span>
+                <span class='fraction'>32/32</span>
             </div>
         
             
@@ -218,7 +218,22 @@
 <a name='L153'></a><a href='#L153'>153</a>
 <a name='L154'></a><a href='#L154'>154</a>
 <a name='L155'></a><a href='#L155'>155</a>
-<a name='L156'></a><a href='#L156'>156</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -230,8 +245,6 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -282,6 +295,23 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -378,15 +408,13 @@ import { StadiumContext } from '../context/StadiumContext';
 &nbsp;
 export const MetricCard = ({ zone }) =&gt; {
   const { incidents, focusedZoneName } = useContext(StadiumContext);
-  
+&nbsp;
   const isFocused = focusedZoneName === zone.name;
   const isCritical = zone.occupancy &gt; 85;
   const isWarning = zone.occupancy &gt; 70;
   const isHighWait = zone.queueTime &gt; 15;
 &nbsp;
-  const hasActiveIncident = incidents.<span class="fstat-no" title="function not covered" >some(</span>
-    inc =&gt; <span class="cstat-no" title="statement not covered" >inc.zone === zone.name &amp;&amp; !inc.resolved</span>
-  );
+  const hasActiveIncident = incidents.<span class="fstat-no" title="function not covered" >some((i</span>nc) =&gt; <span class="cstat-no" title="statement not covered" >inc.zone === zone.name &amp;&amp; !inc.resolved)</span>;
 &nbsp;
   const getOccupancyColor = () =&gt; {
     <span class="missing-if-branch" title="if path not taken" >I</span>if (isCritical) <span class="cstat-no" title="statement not covered" >return 'bg-red-500';</span>
@@ -432,12 +460,12 @@ export const MetricCard = ({ zone }) =&gt; {
     'Concourse A': 'A',
     'Concourse B': 'B',
     'Food Court': 'F',
-    'Merchandise': 'M'
+    Merchandise: 'M'
   };
   const keyLabel = shortcutKeys[zone.name];
 &nbsp;
   return (
-    &lt;div 
+    &lt;div
       id={`zone-card-${zone.id}`}
       className={`relative group bg-card border rounded-2xl p-5 transition-all duration-300 hover:shadow-xl hover:shadow-accent/5 ${
         isFocused ? 'scale-[1.02] z-10' : ''
@@ -448,7 +476,10 @@ export const MetricCard = ({ zone }) =&gt; {
         &lt;h3 className="text-lg font-semibold text-text-primary flex items-center gap-1.5"&gt;
           {zone.name}
           {keyLabel &amp;&amp; (
-            &lt;kbd className="px-1.5 py-0.5 text-[9px] font-bold bg-slate-800 text-accent border border-accent/20 rounded font-mono select-none" title={`Press ${keyLabel} shortcut key`}&gt;
+            &lt;kbd
+              className="px-1.5 py-0.5 text-[9px] font-bold bg-slate-800 text-accent border border-accent/20 rounded font-mono select-none"
+              title={`Press ${keyLabel} shortcut key`}
+            &gt;
               {keyLabel}
             &lt;/kbd&gt;
           )}
@@ -465,12 +496,12 @@ export const MetricCard = ({ zone }) =&gt; {
           &lt;span className={`text-xl font-bold ${getOccupancyTextColor()}`}&gt;{zone.occupancy}%&lt;/span&gt;
         &lt;/div&gt;
         &lt;div className="w-full h-2.5 bg-gray-800 rounded-full overflow-hidden"&gt;
-          &lt;div 
+          &lt;div
             className={`h-full ${getOccupancyColor()} rounded-full transition-all duration-700 ease-out`}
             style={{ width: `${zone.occupancy}%` }}
           /&gt;
         &lt;/div&gt;
-        
+&nbsp;
         {/* Occupancy markers */}
         &lt;div className="flex justify-between mt-1.5"&gt;
           &lt;span className="text-xs text-text-muted"&gt;0%&lt;/span&gt;
@@ -483,7 +514,9 @@ export const MetricCard = ({ zone }) =&gt; {
       &lt;div className="flex items-baseline justify-between mb-4"&gt;
         &lt;span className="text-xs text-text-muted uppercase tracking-wide"&gt;Wait Time&lt;/span&gt;
         &lt;div className="flex items-baseline gap-1"&gt;
-          &lt;span className={`text-2xl font-bold ${isHighWait ? <span class="branch-0 cbranch-no" title="branch not covered" >'text-red-400' : '</span>text-text-primary'}`}&gt;
+          &lt;span
+            className={`text-2xl font-bold ${isHighWait ? <span class="branch-0 cbranch-no" title="branch not covered" >'text-red-400' : '</span>text-text-primary'}`}
+          &gt;
             {zone.queueTime}
           &lt;/span&gt;
           &lt;span className="text-sm text-text-muted"&gt;min&lt;/span&gt;
@@ -492,7 +525,7 @@ export const MetricCard = ({ zone }) =&gt; {
 &nbsp;
       {/* Wait time progress bar */}
       &lt;div className="w-full h-1.5 bg-gray-800 rounded-full overflow-hidden mb-4"&gt;
-        &lt;div 
+        &lt;div
           className={`h-full rounded-full transition-all duration-500 ${isHighWait ? <span class="branch-0 cbranch-no" title="branch not covered" >'bg-red-500' : '</span>bg-gray-600'}`}
           style={{ width: `${Math.min(100, (zone.queueTime / 30) * 100)}%` }}
         /&gt;
@@ -502,8 +535,19 @@ export const MetricCard = ({ zone }) =&gt; {
       {hasActiveIncident &amp;&amp; (
 <span class="branch-1 cbranch-no" title="branch not covered" >        &lt;div className="relative pt-4 border-t border-red-500/20 animate-pulse-subtle"&gt;</span>
           &lt;div className="flex items-center gap-2 text-red-400 text-sm"&gt;
-            &lt;svg className="w-4 h-4 flex-shrink-0 animate-bounce-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"&gt;
-              &lt;path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /&gt;
+            &lt;svg
+              className="w-4 h-4 flex-shrink-0 animate-bounce-subtle"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            &gt;
+              &lt;path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              /&gt;
             &lt;/svg&gt;
             &lt;span className="font-medium text-xs"&gt;ACTIVE INCIDENT&lt;/span&gt;
           &lt;/div&gt;
@@ -513,13 +557,13 @@ export const MetricCard = ({ zone }) =&gt; {
 &nbsp;
       {/* Hover Actions */}
       &lt;div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 mt-4 pt-4 border-t border-border flex items-center justify-between"&gt;
-        &lt;button 
+        &lt;button
           aria-label={`View detailed metrics for ${zone.name}`}
           className="px-3 py-1.5 text-xs font-medium text-text-secondary bg-gray-800 hover:bg-gray-700 border border-border rounded-lg transition-colors cursor-pointer"
         &gt;
           Details
         &lt;/button&gt;
-        &lt;button 
+        &lt;button
           aria-label={`Dispatch personnel to ${zone.name}`}
           className="px-3 py-1.5 text-xs font-medium text-white bg-accent/20 hover:bg-accent/30 border border-accent/30 rounded-lg transition-colors cursor-pointer"
         &gt;
@@ -528,14 +572,15 @@ export const MetricCard = ({ zone }) =&gt; {
       &lt;/div&gt;
     &lt;/div&gt;
   );
-};</pre></td></tr></table></pre>
+};
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-18T19:23:52.543Z
+                at 2026-07-18T19:43:12.501Z
             </div>
         <script src="../prettify.js"></script>
         <script>

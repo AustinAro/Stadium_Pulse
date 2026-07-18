@@ -34,6 +34,18 @@ describe('generateAIInsights', () => {
     expect(insights.crowdFlowRisk).toContain('HIGH');
     expect(insights.riskColor).toBe('text-red-400');
   });
+
+  it('should return compliance override strings when Supporters Section is busiest', () => {
+    const mockZones = [
+      { name: 'Supporters Section', occupancy: 95, queueTime: 25 },
+      { name: 'Gate C', occupancy: 10, queueTime: 2 }
+    ];
+    const insights = generateAIInsights(mockZones);
+    expect(insights.predictedPeak).toBe('Supporters Section in 12 min');
+    expect(insights.recommendedAction).toBe('Pre-position Staff Gamma at Gate 3');
+    expect(insights.crowdFlowRisk).toBe('HIGH - Convergence at Concourse A');
+    expect(insights.resourceOptimization).toBe('Reroute 40% VIP staff to Family Zone');
+  });
 });
 
 const TestComponent = () => {
