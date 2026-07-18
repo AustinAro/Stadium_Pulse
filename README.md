@@ -49,7 +49,9 @@ npm install
 npm run dev
 ```
 
----
+## 📂 Project Directory Structure
+
+```text
 StadiumPulse/
 ├── index.html              # Entry point index file (with font imports)
 ├── package.json            # Scripts, React, Vite, and Tailwind v4 dependencies
@@ -68,4 +70,3 @@ StadiumPulse/
     │   └── StadiumContext.js # Shared states, handler callbacks, and AI generators
     └── data/
         └── mockDataEngine.js # Telemetry generator
----        
