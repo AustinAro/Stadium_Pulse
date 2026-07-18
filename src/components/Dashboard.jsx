@@ -4,7 +4,11 @@ import { MetricCard } from './MetricCard';
 import { RuleEngine } from './RuleEngine';
 import { IncidentItem } from './IncidentItem';
 
-// Synthesized sound alert player using Web Audio API
+/**
+ * Synthesizes and plays a warning or siren tone programmatically using Web Audio API.
+ * @param {string} severity - Severity of the incident ('critical' or 'warning').
+ * @returns {void}
+ */
 const playAlertSound = (severity = 'critical') => {
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -37,7 +41,7 @@ const playAlertSound = (severity = 'critical') => {
       osc.stop(ctx.currentTime + 0.38);
     }
   } catch (error) {
-    console.warn('Audio playback blocked by user guest settings or autoplay policy.', error);
+    // Audio playback blocked by browser guest settings or autoplay policy
   }
 };
 
