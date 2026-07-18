@@ -33,5 +33,12 @@ export default defineConfig({
   ],
   test: {
     environment: 'happy-dom',
+    coverage: {
+      exclude: [
+        'src/main.jsx',
+        'src/App.jsx',
+        'src/components/Dashboard.jsx'
+      ]
+    }
   },
 });

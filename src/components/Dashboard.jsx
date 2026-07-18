@@ -595,7 +595,7 @@ const StatCard = ({ label, value, icon, color }) => {
   };
 
   return (
-    <div className="bg-card border border-border rounded-xl p-4" role="status" aria-label={`Metric panel: ${label}. Current reading: ${value}.`}>
+    <div className="bg-card border border-border rounded-xl p-4">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-[10px] text-text-muted uppercase tracking-wider font-semibold">{label}</p>
@@ -611,7 +611,7 @@ const StatCard = ({ label, value, icon, color }) => {
 
 // Legend Item
 const LegendItem = ({ color, label }) => (
-  <span className="flex items-center gap-1.5 px-2 py-1 bg-card border border-border rounded-lg" role="note" aria-label={`Status legend color indicator: ${label}.`}>
+  <span className="flex items-center gap-1.5 px-2 py-1 bg-card border border-border rounded-lg">
     <span className={`w-2.5 h-2.5 rounded-full ${color}`} aria-hidden="true" />
     <span>{label}</span>
   </span>
