@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import { StadiumContext } from '../context/StadiumContext';
 
+let incidentCounter = 0;
+const generateId = () => `inc-rule-${Date.now()}-${incidentCounter++}`;
+
 export const RuleEngine = () => {
   const { zones, incidents, setIncidents } = useContext(StadiumContext);
   const triggeredZones = useRef(new Set());
@@ -21,7 +24,7 @@ export const RuleEngine = () => {
         if (!existingIncident) {
           triggeredZones.current.add(zoneKey);
           newIncidents.push({
-            id: Date.now() + Math.random(),
+            id: generateId(),
             zone: zone.name,
             type: 'critical_occupancy',
             severity: 'critical',
@@ -48,7 +51,7 @@ export const RuleEngine = () => {
         if (!existingWarning) {
           triggeredZones.current.add(warningKey);
           newIncidents.push({
-            id: Date.now() + Math.random(),
+            id: generateId(),
             zone: zone.name,
             type: 'warning_occupancy',
             severity: 'warning',

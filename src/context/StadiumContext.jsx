@@ -30,6 +30,9 @@ export const generateAIInsights = (zones) => {
   };
 };
 
+let dispatchCounter = 0;
+const generateDispatchId = () => `inc-dispatch-${Date.now()}-${dispatchCounter++}`;
+
 export const StadiumProvider = ({ children }) => {
   const [zones, setZones] = useState(generateZoneData());
   const [incidents, setIncidents] = useState([]);
@@ -63,7 +66,7 @@ export const StadiumProvider = ({ children }) => {
 
       return [
         {
-          id: Date.now() + Math.random(),
+          id: generateDispatchId(),
           zone: zoneName,
           type: 'dispatch_action',
           severity: 'warning',
