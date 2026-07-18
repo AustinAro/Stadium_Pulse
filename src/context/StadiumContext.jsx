@@ -39,12 +39,46 @@ export const StadiumProvider = ({ children }) => {
   const [focusedZoneName, setFocusedZoneName] = useState(null);
   const coordinator = "Austin Aro A.";
 
-  // Update zones every 3 seconds
+  // Update zones via simulated WebSocket feed with automated local fallback
   useEffect(() => {
-    const interval = setInterval(() => {
-      setZones(generateZoneData());
-    }, 3000);
-    return () => clearInterval(interval);
+    let ws;
+    let fallbackInterval;
+
+    const startFallback = () => {
+      if (fallbackInterval) return;
+      fallbackInterval = setInterval(() => {
+        setZones(generateZoneData());
+      }, 3000);
+    };
+
+    try {
+      ws = new WebSocket('wss://api.stadiumpulse.live/feed');
+      ws.onmessage = (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          if (data && Array.isArray(data)) {
+            setZones(data);
+          }
+        } catch (err) {
+          startFallback();
+        }
+      };
+      
+      ws.onerror = () => {
+        startFallback();
+      };
+
+      ws.onclose = () => {
+        startFallback();
+      };
+    } catch (e) {
+      startFallback();
+    }
+
+    return () => {
+      if (ws) ws.close();
+      if (fallbackInterval) clearInterval(fallbackInterval);
+    };
   }, []);
 
   // Function to acknowledge/resolve an incident
