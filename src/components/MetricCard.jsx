@@ -127,7 +127,7 @@ export const MetricCard = ({ zone }) => {
       {hasActiveIncident && (
         <div className="relative pt-4 border-t border-red-500/20 animate-pulse-subtle">
           <div className="flex items-center gap-2 text-red-400 text-sm">
-            <svg className="w-4 h-4 flex-shrink-0 animate-bounce-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 flex-shrink-0 animate-bounce-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
             <span className="font-medium text-xs">ACTIVE INCIDENT</span>
@@ -138,10 +138,16 @@ export const MetricCard = ({ zone }) => {
 
       {/* Hover Actions */}
       <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 mt-4 pt-4 border-t border-border flex items-center justify-between">
-        <button className="px-3 py-1.5 text-xs font-medium text-text-secondary bg-gray-800 hover:bg-gray-700 border border-border rounded-lg transition-colors cursor-pointer">
+        <button 
+          aria-label={`View detailed metrics for ${zone.name}`}
+          className="px-3 py-1.5 text-xs font-medium text-text-secondary bg-gray-800 hover:bg-gray-700 border border-border rounded-lg transition-colors cursor-pointer"
+        >
           Details
         </button>
-        <button className="px-3 py-1.5 text-xs font-medium text-white bg-accent/20 hover:bg-accent/30 border border-accent/30 rounded-lg transition-colors cursor-pointer">
+        <button 
+          aria-label={`Dispatch personnel to ${zone.name}`}
+          className="px-3 py-1.5 text-xs font-medium text-white bg-accent/20 hover:bg-accent/30 border border-accent/30 rounded-lg transition-colors cursor-pointer"
+        >
           Dispatch
         </button>
       </div>

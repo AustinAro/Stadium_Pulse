@@ -1,57 +1,40 @@
-import React, { createContext, useState, useEffect, useCallback, useRef } from 'react';
-import { generateZoneData, aiInsights } from '../data/mockDataEngine';
+import React, { createContext, useState, useEffect, useCallback, useMemo } from 'react';
+import { generateZoneData } from '../data/mockDataEngine';
 
 export const StadiumContext = createContext();
+
+export const generateAIInsights = (zones) => {
+  if (!zones || zones.length === 0) return null;
+  const sorted = [...zones].sort((a, b) => b.occupancy - a.occupancy);
+  const peakZone = sorted[0];
+  const lowestZone = sorted[sorted.length - 1];
+  
+  const highOccupancyCount = zones.filter(z => z.occupancy > 80).length;
+  let crowdFlowRisk = "LOW";
+  let riskColor = "text-green-400";
+  if (highOccupancyCount >= 3) {
+    crowdFlowRisk = "HIGH - Surge Bottleneck";
+    riskColor = "text-red-400";
+  } else if (highOccupancyCount >= 1) {
+    crowdFlowRisk = "MEDIUM - Localized Surge";
+    riskColor = "text-yellow-400";
+  }
+
+  return {
+    predictedPeak: `${peakZone.name} (Currently ${peakZone.occupancy}% capacity)`,
+    recommendedAction: `Deploy extra personnel to ${peakZone.name} for flow management.`,
+    recommendedZone: peakZone.name,
+    crowdFlowRisk,
+    riskColor,
+    resourceOptimization: `Reroute resources from ${lowestZone.name} (${lowestZone.occupancy}% capacity) to ${peakZone.name}.`
+  };
+};
 
 export const StadiumProvider = ({ children }) => {
   const [zones, setZones] = useState(generateZoneData());
   const [incidents, setIncidents] = useState([]);
-  const [insights, setInsights] = useState([]);
-  const [dismissedInsights, setDismissedInsights] = useState(new Set());
+  const [focusedZoneName, setFocusedZoneName] = useState(null);
   const coordinator = "Austin Aro A.";
-  const triggeredZones = useRef(new Set());
-
-  // Sound alerts
-  const playAlert = useCallback((severity) => {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    
-    if (severity === 'critical') {
-      osc.frequency.setValueAtTime(880, ctx.currentTime); // A5
-      osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.3);
-      gain.gain.setValueAtTime(0.3, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.5);
-      // Double beep for critical
-      setTimeout(() => {
-        const osc2 = ctx.createOscillator();
-        const gain2 = ctx.createGain();
-        osc2.connect(gain2);
-        gain2.connect(ctx.destination);
-        osc2.frequency.setValueAtTime(880, ctx.currentTime);
-        gain2.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-        osc2.start();
-        osc2.stop(ctx.currentTime + 0.3);
-      }, 200);
-    } else if (severity === 'warning') {
-      osc.frequency.setValueAtTime(660, ctx.currentTime); // E5
-      gain.gain.setValueAtTime(0.15, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.4);
-    } else {
-      osc.frequency.setValueAtTime(523, ctx.currentTime); // C5
-      gain.gain.setValueAtTime(0.1, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.3);
-    }
-  }, []);
 
   // Update zones every 3 seconds
   useEffect(() => {
@@ -61,80 +44,7 @@ export const StadiumProvider = ({ children }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // Rule Engine - detect incidents
-  useEffect(() => {
-    const newIncidents = [];
-    
-    zones.forEach(zone => {
-      const isCritical = zone.occupancy > 85;
-      const isWarning = zone.occupancy > 70 && zone.occupancy <= 85;
-      const criticalKey = `${zone.name}-critical`;
-      const warningKey = `${zone.name}-warning`;
-      
-      if (isCritical && !triggeredZones.current.has(criticalKey)) {
-        const existing = incidents.find(inc => inc.zone === zone.name && inc.type === 'critical_occupancy' && !inc.resolved);
-        if (!existing) {
-          triggeredZones.current.add(criticalKey);
-          newIncidents.push({
-            id: Date.now() + Math.random(),
-            zone: zone.name,
-            type: 'critical_occupancy',
-            severity: 'critical',
-            message: `Zone ${zone.name} at ${zone.occupancy}% capacity. Immediate action required.`,
-            assigned: 'Staff Alpha',
-            timestamp: new Date().toISOString(),
-            acknowledged: false
-          });
-          playAlert('critical');
-        }
-      } else if (!isCritical) {
-        triggeredZones.current.delete(criticalKey);
-      }
-      
-      if (isWarning && !triggeredZones.current.has(warningKey)) {
-        const existing = incidents.find(inc => inc.zone === zone.name && inc.type === 'warning_occupancy' && !inc.resolved);
-        if (!existing) {
-          triggeredZones.current.add(warningKey);
-          newIncidents.push({
-            id: Date.now() + Math.random(),
-            zone: zone.name,
-            type: 'warning_occupancy',
-            severity: 'warning',
-            message: `Zone ${zone.name} approaching capacity at ${zone.occupancy}%. Monitor closely.`,
-            assigned: 'Staff Beta',
-            timestamp: new Date().toISOString(),
-            acknowledged: false
-          });
-          playAlert('warning');
-        }
-      } else if (!isWarning) {
-        triggeredZones.current.delete(warningKey);
-      }
-    });
-
-    if (newIncidents.length > 0) {
-      setIncidents(prev => [...newIncidents, ...prev]);
-    }
-  }, [zones, incidents, playAlert]);
-
-  // AI Insights - rotate every 15 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const available = aiInsights.filter(i => !dismissedInsights.has(i.text));
-      if (available.length > 0) {
-        const insight = available[Math.floor(Math.random() * available.length)];
-        setInsights(prev => {
-          if (prev.length >= 3) return [...prev.slice(1), { ...insight, id: Date.now() }];
-          return [...prev, { ...insight, id: Date.now() }];
-        });
-      }
-    }, 15000);
-    
-    // Initial insights
-    setInsights(aiInsights.slice(0, 2).map((i, idx) => ({ ...i, id: idx })));
-    return () => clearInterval(interval);
-  }, [dismissedInsights]);
-
+  // Function to acknowledge/resolve an incident
   const acknowledgeIncident = useCallback((incidentId) => {
     setIncidents(prev => prev.map(inc => 
       inc.id === incidentId ? { ...inc, acknowledged: true, acknowledgedAt: new Date().toISOString() } : inc
@@ -145,19 +55,41 @@ export const StadiumProvider = ({ children }) => {
     setIncidents(prev => prev.filter(inc => inc.id !== incidentId));
   }, []);
 
-  const dismissInsight = useCallback((text) => {
-    setDismissedInsights(prev => new Set([...prev, text]));
-    setInsights(prev => prev.filter(i => i.text !== text));
+  const dispatchStaff = useCallback((zoneName, staffName = "Staff Alpha") => {
+    setIncidents(prev => {
+      // Check if there's already an active action/incident of this type
+      const exists = prev.some(inc => inc.zone === zoneName && inc.type === 'dispatch_action' && !inc.resolved);
+      if (exists) return prev;
+
+      return [
+        {
+          id: Date.now() + Math.random(),
+          zone: zoneName,
+          type: 'dispatch_action',
+          severity: 'warning',
+          message: `GenAI Dispatch: ${staffName} dispatched to ${zoneName} for peak mitigation.`,
+          assigned: staffName,
+          timestamp: new Date().toISOString(),
+          acknowledged: true,
+          resolved: false
+        },
+        ...prev
+      ];
+    });
   }, []);
+
+  const aiInsights = useMemo(() => generateAIInsights(zones), [zones]);
 
   const value = { 
     zones, 
     incidents, 
-    insights,
     setIncidents,
     acknowledgeIncident,
     resolveIncident,
-    dismissInsight,
+    dispatchStaff,
+    aiInsights,
+    focusedZoneName,
+    setFocusedZoneName,
     coordinator 
   };
   

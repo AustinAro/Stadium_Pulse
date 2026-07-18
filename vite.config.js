@@ -1,19 +1,23 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  plugins: [tailwindcss(), react()],
-  esbuild: {
-    loader: 'jsx',
-    include: /src\/.*\.(js|jsx)$/,
-    exclude: [],
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      loader: {
-        '.js': 'jsx',
-      },
-    },
-  },
+  plugins: [
+    tailwindcss(),
+    react(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      manifest: {
+        name: 'StadiumPulse Operations Control',
+        short_name: 'StadiumPulse',
+        description: 'Real-time stadium operations & crowd intelligence for FIFA World Cup 2026',
+        theme_color: '#0a0f1a',
+        background_color: '#0a0f1a',
+        display: 'standalone',
+        icons: []
+      }
+    })
+  ],
 });

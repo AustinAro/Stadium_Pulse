@@ -47,7 +47,12 @@ git clone [https://github.com/your-username/StadiumPulse.git](https://github.com
 cd StadiumPulse
 npm install
 npm run dev
+### 4. Run Automated Test Suite
+```bash
+npm run test
 ```
+
+---
 
 ## 📂 Project Directory Structure
 
@@ -55,18 +60,21 @@ npm run dev
 StadiumPulse/
 ├── index.html              # Entry point index file (with font imports)
 ├── package.json            # Scripts, React, Vite, and Tailwind v4 dependencies
-├── vite.config.js          # Configures esbuild JSX loaders and Tailwind plugins
+├── vite.config.js          # Configures PWA, Tailwind v4 and React plugins
 ├── postcss.config.js       # AutoPrefixer CSS configurations
 └── src/
-    ├── App.js              # Wraps components inside StadiumProvider
+    ├── App.jsx             # Wraps components inside StadiumProvider
     ├── index.css           # Custom CSS animations and Tailwind imports
     ├── main.jsx            # DOM creation mount point
     ├── components/
-    │   ├── Dashboard.js    # Metric panels, Minimap, Keyboard listeners, AI Copilot
-    │   ├── MetricCard.js   # Zone status indicator card
-    │   ├── IncidentItem.js # Alarm ticket card
-    │   └── RuleEngine.js   # Background metrics evaluator (triggers incidents)
+    │   ├── Dashboard.jsx   # Metric panels, Minimap, Keyboard listeners, AI Copilot, CSV Exporter
+    │   ├── MetricCard.jsx  # Zone status indicator card
+    │   ├── IncidentItem.jsx# Alarm ticket card
+    │   └── RuleEngine.jsx  # Background metrics evaluator (triggers incidents)
     ├── context/
-    │   └── StadiumContext.js # Shared states, handler callbacks, and AI generators
+    │   └── StadiumContext.jsx # Shared states, handler callbacks, and AI generators
     └── data/
-        └── mockDataEngine.js # Telemetry generator
+        ├── mockDataEngine.js  # Telemetry generator
+        ├── mockDataEngine.test.js # Telemetry unit tests
+        └── StadiumContext.test.js # Context and AI logic unit tests
+```
