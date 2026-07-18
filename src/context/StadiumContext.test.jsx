@@ -15,7 +15,7 @@ describe('generateAIInsights', () => {
       { name: 'Gate B', occupancy: 95, queueTime: 25 },
       { name: 'Gate C', occupancy: 10, queueTime: 2 }
     ];
-    
+
     const insights = generateAIInsights(mockZones);
     expect(insights).not.toBeNull();
     expect(insights.predictedPeak).toContain('Gate B');
@@ -29,7 +29,7 @@ describe('generateAIInsights', () => {
       { name: 'Gate B', occupancy: 90, queueTime: 20 },
       { name: 'Gate C', occupancy: 95, queueTime: 30 }
     ];
-    
+
     const insights = generateAIInsights(mockZones);
     expect(insights.crowdFlowRisk).toContain('HIGH');
     expect(insights.riskColor).toBe('text-red-400');
@@ -37,18 +37,25 @@ describe('generateAIInsights', () => {
 });
 
 const TestComponent = () => {
-  const { incidents, acknowledgeIncident, resolveIncident, dispatchStaff, zones } = useContext(StadiumContext);
+  const { incidents, acknowledgeIncident, resolveIncident, dispatchStaff, zones } =
+    useContext(StadiumContext);
   return (
     <div>
       <div data-testid="zones-count">{zones.length}</div>
       <div data-testid="incidents-count">{incidents.length}</div>
-      <button onClick={() => dispatchStaff('North Gate')} data-testid="dispatch-btn">Dispatch</button>
-      {incidents.map(inc => (
+      <button onClick={() => dispatchStaff('North Gate')} data-testid="dispatch-btn">
+        Dispatch
+      </button>
+      {incidents.map((inc) => (
         <div key={inc.id}>
           <span data-testid="inc-zone">{inc.zone}</span>
           <span data-testid="inc-ack">{inc.acknowledged ? 'Yes' : 'No'}</span>
-          <button onClick={() => acknowledgeIncident(inc.id)} data-testid="ack-btn">Ack</button>
-          <button onClick={() => resolveIncident(inc.id)} data-testid="resolve-btn">Resolve</button>
+          <button onClick={() => acknowledgeIncident(inc.id)} data-testid="ack-btn">
+            Ack
+          </button>
+          <button onClick={() => resolveIncident(inc.id)} data-testid="resolve-btn">
+            Resolve
+          </button>
         </div>
       ))}
     </div>
@@ -75,7 +82,7 @@ describe('StadiumProvider Component Context', () => {
     // Acknowledge incident
     fireEvent.click(screen.getByTestId('ack-btn'));
     expect(screen.getByTestId('inc-ack').textContent).toBe('Yes');
-    
+
     // Resolve incident
     fireEvent.click(screen.getByTestId('resolve-btn'));
     expect(screen.getByTestId('incidents-count').textContent).toBe('0');

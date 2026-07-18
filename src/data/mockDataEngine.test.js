@@ -16,7 +16,7 @@ describe('mockDataEngine', () => {
 
   it('should return valid numerical bounds for occupancy and queueTime', () => {
     const data = generateZoneData();
-    data.forEach(zone => {
+    data.forEach((zone) => {
       expect(zone.id).toBeTypeOf('number');
       expect(zone.occupancy).toBeGreaterThanOrEqual(5);
       expect(zone.occupancy).toBeLessThanOrEqual(99);

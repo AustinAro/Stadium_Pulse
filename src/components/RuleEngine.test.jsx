@@ -8,9 +8,7 @@ describe('RuleEngine Component', () => {
   it('triggers critical occupancy alert when occupancy exceeds 85%', () => {
     const mockSetIncidents = vi.fn();
     const mockContext = {
-      zones: [
-        { id: 1, name: 'North Gate', occupancy: 90, queueTime: 10 }
-      ],
+      zones: [{ id: 1, name: 'North Gate', occupancy: 90, queueTime: 10 }],
       incidents: [],
       setIncidents: mockSetIncidents
     };

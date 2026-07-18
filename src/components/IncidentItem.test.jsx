@@ -16,14 +16,8 @@ describe('IncidentItem Component', () => {
   };
 
   it('renders incident details correctly', () => {
-    render(
-      <IncidentItem 
-        incident={mockIncident} 
-        onAcknowledge={vi.fn()} 
-        onResolve={vi.fn()} 
-      />
-    );
-    
+    render(<IncidentItem incident={mockIncident} onAcknowledge={vi.fn()} onResolve={vi.fn()} />);
+
     expect(screen.getByText('VIP Lounge')).toBeDefined();
     expect(screen.getByText('Test incident message')).toBeDefined();
     expect(screen.getByText('CRITICAL')).toBeDefined();

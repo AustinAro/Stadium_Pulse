@@ -6,9 +6,7 @@ import { describe, it, expect, vi } from 'vitest';
 
 describe('Dashboard Component', () => {
   const mockContext = {
-    zones: [
-      { id: 1, name: 'North Gate', occupancy: 40, queueTime: 5 }
-    ],
+    zones: [{ id: 1, name: 'North Gate', occupancy: 40, queueTime: 5 }],
     coordinator: 'Austin Aro A.',
     incidents: [],
     acknowledgeIncident: vi.fn(),

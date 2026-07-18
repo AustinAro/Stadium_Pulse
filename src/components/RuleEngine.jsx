@@ -10,17 +10,17 @@ export const RuleEngine = () => {
 
   useEffect(() => {
     const newIncidents = [];
-    
-    zones.forEach(zone => {
+
+    zones.forEach((zone) => {
       const isCritical = zone.occupancy > 85;
       const zoneKey = `${zone.name}-critical`;
-      
+
       if (isCritical && !triggeredZones.current.has(zoneKey)) {
         // Check if there's already an active incident for this zone
         const existingIncident = incidents.find(
-          inc => inc.zone === zone.name && inc.type === 'critical_occupancy' && !inc.resolved
+          (inc) => inc.zone === zone.name && inc.type === 'critical_occupancy' && !inc.resolved
         );
-        
+
         if (!existingIncident) {
           triggeredZones.current.add(zoneKey);
           newIncidents.push({
@@ -38,16 +38,16 @@ export const RuleEngine = () => {
         // Remove from triggered when occupancy drops
         triggeredZones.current.delete(zoneKey);
       }
-      
+
       // Warning level incidents (70-85%)
       const isWarning = zone.occupancy > 70 && zone.occupancy <= 85;
       const warningKey = `${zone.name}-warning`;
-      
+
       if (isWarning && !triggeredZones.current.has(warningKey)) {
         const existingWarning = incidents.find(
-          inc => inc.zone === zone.name && inc.type === 'warning_occupancy' && !inc.resolved
+          (inc) => inc.zone === zone.name && inc.type === 'warning_occupancy' && !inc.resolved
         );
-        
+
         if (!existingWarning) {
           triggeredZones.current.add(warningKey);
           newIncidents.push({
@@ -67,7 +67,7 @@ export const RuleEngine = () => {
     });
 
     if (newIncidents.length > 0) {
-      setIncidents(prev => [...newIncidents, ...prev]);
+      setIncidents((prev) => [...newIncidents, ...prev]);
     }
   }, [zones, incidents, setIncidents]);
 

@@ -8,16 +8,16 @@ export const generateAIInsights = (zones) => {
   const sorted = [...zones].sort((a, b) => b.occupancy - a.occupancy);
   const peakZone = sorted[0];
   const lowestZone = sorted[sorted.length - 1];
-  
-  const highOccupancyCount = zones.filter(z => z.occupancy > 80).length;
-  let crowdFlowRisk = "LOW";
-  let riskColor = "text-green-400";
+
+  const highOccupancyCount = zones.filter((z) => z.occupancy > 80).length;
+  let crowdFlowRisk = 'LOW';
+  let riskColor = 'text-green-400';
   if (highOccupancyCount >= 3) {
-    crowdFlowRisk = "HIGH - Surge Bottleneck";
-    riskColor = "text-red-400";
+    crowdFlowRisk = 'HIGH - Surge Bottleneck';
+    riskColor = 'text-red-400';
   } else if (highOccupancyCount >= 1) {
-    crowdFlowRisk = "MEDIUM - Localized Surge";
-    riskColor = "text-yellow-400";
+    crowdFlowRisk = 'MEDIUM - Localized Surge';
+    riskColor = 'text-yellow-400';
   }
 
   return {
@@ -37,7 +37,7 @@ export const StadiumProvider = ({ children }) => {
   const [zones, setZones] = useState(generateZoneData());
   const [incidents, setIncidents] = useState([]);
   const [focusedZoneName, setFocusedZoneName] = useState(null);
-  const coordinator = "Austin Aro A.";
+  const coordinator = 'Austin Aro A.';
 
   // Update zones via simulated WebSocket feed with automated local fallback
   useEffect(() => {
@@ -64,7 +64,7 @@ export const StadiumProvider = ({ children }) => {
             startFallback();
           }
         };
-        
+
         ws.onerror = () => {
           startFallback();
         };
@@ -87,19 +87,25 @@ export const StadiumProvider = ({ children }) => {
 
   // Function to acknowledge/resolve an incident
   const acknowledgeIncident = useCallback((incidentId) => {
-    setIncidents(prev => prev.map(inc => 
-      inc.id === incidentId ? { ...inc, acknowledged: true, acknowledgedAt: new Date().toISOString() } : inc
-    ));
+    setIncidents((prev) =>
+      prev.map((inc) =>
+        inc.id === incidentId
+          ? { ...inc, acknowledged: true, acknowledgedAt: new Date().toISOString() }
+          : inc
+      )
+    );
   }, []);
 
   const resolveIncident = useCallback((incidentId) => {
-    setIncidents(prev => prev.filter(inc => inc.id !== incidentId));
+    setIncidents((prev) => prev.filter((inc) => inc.id !== incidentId));
   }, []);
 
-  const dispatchStaff = useCallback((zoneName, staffName = "Staff Alpha") => {
-    setIncidents(prev => {
+  const dispatchStaff = useCallback((zoneName, staffName = 'Staff Alpha') => {
+    setIncidents((prev) => {
       // Check if there's already an active action/incident of this type
-      const exists = prev.some(inc => inc.zone === zoneName && inc.type === 'dispatch_action' && !inc.resolved);
+      const exists = prev.some(
+        (inc) => inc.zone === zoneName && inc.type === 'dispatch_action' && !inc.resolved
+      );
       if (exists) return prev;
 
       return [
@@ -121,9 +127,9 @@ export const StadiumProvider = ({ children }) => {
 
   const aiInsights = useMemo(() => generateAIInsights(zones), [zones]);
 
-  const value = { 
-    zones, 
-    incidents, 
+  const value = {
+    zones,
+    incidents,
     setIncidents,
     acknowledgeIncident,
     resolveIncident,
@@ -131,8 +137,8 @@ export const StadiumProvider = ({ children }) => {
     aiInsights,
     focusedZoneName,
     setFocusedZoneName,
-    coordinator 
+    coordinator
   };
-  
+
   return <StadiumContext.Provider value={value}>{children}</StadiumContext.Provider>;
 };
