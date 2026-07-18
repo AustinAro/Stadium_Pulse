@@ -65,7 +65,7 @@ const StadiumMinimap = ({ zones, focusedZoneName, setFocusedZoneName }) => {
   return (
     <div className="bg-card border border-border rounded-2xl p-5 flex flex-col justify-between h-full">
       <div>
-        <h3 className="text-md font-bold text-text-primary mb-1 flex items-center gap-2">
+        <h2 className="text-md font-bold text-text-primary mb-1 flex items-center gap-2">
           <svg
             className="w-5 h-5 text-accent animate-pulse"
             fill="none"
@@ -81,7 +81,7 @@ const StadiumMinimap = ({ zones, focusedZoneName, setFocusedZoneName }) => {
             />
           </svg>
           Stadium Spatial Minimap
-        </h3>
+        </h2>
         <p className="text-xs text-text-muted mb-4">
           Click sectors to locate and focus. Hover to preview.
         </p>
@@ -438,13 +438,13 @@ export const Dashboard = () => {
 
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-text-primary flex items-center gap-2">
+                  <h2 className="text-lg font-bold text-text-primary flex items-center gap-2">
                     <span className="flex h-2.5 w-2.5 relative" aria-hidden="true">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
                     </span>
                     GenAI Operational Copilot
-                  </h3>
+                  </h2>
                   <div className="px-2.5 py-0.5 bg-accent-dim border border-accent/20 rounded-full text-[10px] font-bold text-accent tracking-wide select-none">
                     PREDICTIVE RADAR
                   </div>
